@@ -37,7 +37,11 @@ Simple android app that takes a image of tomato leaf and predicts if it is healt
 
 # App Demo
 
-https://user-images.githubusercontent.com/61627836/186382323-57f4a520-ce6b-4c60-9e31-ab320da2604e.mp4
+
+
+https://user-images.githubusercontent.com/61627836/186446347-5a76f82d-5000-4fe1-96ef-8fc3d0ce913d.mp4
+
+
 
 
 
