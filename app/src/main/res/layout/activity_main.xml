@@ -67,4 +67,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/predict" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/solution"
+        android:layout_width="219dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_shape"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="SOLUTION"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textId" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

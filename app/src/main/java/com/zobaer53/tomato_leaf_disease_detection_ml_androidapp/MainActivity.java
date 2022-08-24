@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.zobaer53.plantapp.R;
@@ -33,7 +34,7 @@ import java.nio.ByteBuffer;
     public class MainActivity extends AppCompatActivity {
 
 
-        private AppCompatButton select, predict;
+        private AppCompatButton select, predict,solution;
         private TextView textView;
         private ImageView imageView;
         private Bitmap img;
@@ -49,9 +50,11 @@ import java.nio.ByteBuffer;
             predict = findViewById(R.id.predict);
             textView = findViewById(R.id.textId);
             imageView = findViewById(R.id.imageview);
+            solution = findViewById(R.id.solution);
 
             imageView.setCropToPadding(true);
             select.setOnTouchListener(new View.OnTouchListener() {
+
                 @SuppressLint("ClickableViewAccessibility")
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
@@ -59,7 +62,7 @@ import java.nio.ByteBuffer;
                             v.getBackground().setColorFilter(Color.rgb(66, 133, 91), PorterDuff.Mode.SRC_ATOP);
                             v.invalidate();
                             textView.setText("");
-
+                            solution.setVisibility(View.INVISIBLE);
                             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                             intent.setType("image/*");
                             startActivityForResult(intent, 10);
@@ -101,31 +104,67 @@ import java.nio.ByteBuffer;
                                 // Runs model inference and gets result.
                                 Model.Outputs outputs = model.process(inputFeature0);
                                 TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-
-                                float[] confidences = outputFeature0.getFloatArray();
-                                int maxPos = 0;
-                                float maxConfidence = confidences[0];
-                                for (int i = 1; i < confidences.length; i++) {
-                                    if (confidences[i] > maxConfidence) {
-                                        maxConfidence = confidences[i];
-                                        maxPos = i;
-
+                                float[] confidences=outputFeature0.getFloatArray();
+                                int maxPos=0;
+                                float maxConfidence=0;
+                                for(int i=0;i<confidences.length;i++){
+                                    if(confidences[i]>maxConfidence){
+                                        maxConfidence=confidences[i];
+                                        maxPos=i;
                                     }
-
+                                    Log.i("Tag", String.valueOf(confidences[i]));
                                 }
-                                //Log.i("Tag",String.valueOf(maxConfidence));
-                                Log.i("Tag", String.valueOf(confidences.length));
                                 // Releases model resources if no longer used.
                                 model.close();
-                                Log.i("Tag", String.valueOf(outputFeature0.getFloatArray()[0]));
-                                Log.i("Tag", String.valueOf(outputFeature0.getFloatArray()[1]));
-                                // Log.i("Tag", String.valueOf(outputFeature0.getFloatArray()[2]));
-                                if (outputFeature0.getFloatArray()[0] < outputFeature0.getFloatArray()[1]) {
-                                    textView.setText("Diseased leaf");
-                                } else {
-                                    textView.setText("Healthy leaf");
+
+
+                                 Log.i("Tag","max value= "+maxConfidence+"Max pos= "+maxPos);
+                                switch(maxPos){
+                                    case 0:
+                                        textView.setText("Healthy leaf");
+                                        break;
+                                    case 1:
+                                        textView.setText("Tomato___Bacterial_spot");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+
+                                    case 2:
+                                        textView.setText("Tomato___Early_blight");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 3:
+                                        textView.setText("Tomato___Late_blight");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 4:
+                                        textView.setText("Tomato___Leaf_Mold");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 5:
+                                        textView.setText("Tomato___Septoria_leaf_spot");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 6:
+                                        textView.setText("Tomato___Spider_mites Two-spotted_spider_mite");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 7:
+                                        textView.setText("Tomato___Target_Spot");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 8:
+                                        textView.setText("Tomato___Tomato_mosaic_virus");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 9:
+                                        textView.setText("Tomato___Tomato_Yellow_Leaf_Curl_Virus");
+                                        solution.setVisibility(View.VISIBLE);
+                                        break;
+
+
                                 }
+
+
                             } catch (IOException e) {
                                 // TODO Handle the exception
 
@@ -142,6 +181,13 @@ import java.nio.ByteBuffer;
                         }
                     }
                     return false;
+                }
+            });
+
+            solution.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(MainActivity.this,WebView.class));
                 }
             });
         }
