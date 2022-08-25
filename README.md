@@ -35,7 +35,7 @@
 Simple android app that takes a image of tomato leaf and predicts if it is healthy or diseased.
 
 
-# App Demo
+# Application Demo
 
 
 
