@@ -33,15 +33,15 @@ import org.junit.runner.RunWith
 
 /**
  * Runs the real pipeline (BitmapFactory decode -> bilinear resize -> raw RGB floats -> LiteRT CPU)
- * on a deterministic synthetic image. Golden comparison is optional: put the legacy app's output for
- * [syntheticBitmap] (one float per line) at `src/androidTest/assets/golden/output.txt` to enable it.
+ * on a deterministic synthetic image. Golden comparison is optional: put the expected output of the
+ * bundled model for [syntheticBitmap] (one float per line) at `src/androidTest/assets/golden/output.txt`.
  */
 @RunWith(AndroidJUnit4::class)
 class ModelInferenceInstrumentedTest {
 
     private val targetContext: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private val testContext: Context = InstrumentationRegistry.getInstrumentation().context
-    private val spec = ModelSpec.TomatoLeafV1
+    private val spec = ModelSpec.TomatoLeafV2
 
     private lateinit var inferenceDispatcher: ExecutorCoroutineDispatcher
     private lateinit var engine: LiteRtInferenceEngine

@@ -9,7 +9,12 @@ Setup (Python 3.11-3.13; ai-edge-litert has no wheels for newer versions yet):
 Data: <data_dir> holds PlantVillage folders named like raw/color/Tomato___* in
 https://github.com/spMohanty/PlantVillage-Dataset (see FOLDER_TO_LABEL below).
 
-Usage: .venv/bin/python -I evaluate.py core/data/src/main/assets/tomato_leaf_disease.tflite <data_dir> [--dump <csv>]
+Usage: .venv/bin/python -I evaluate.py core/data/src/main/assets/tomato_leaf_disease_v2.tflite <data_dir> [--dump <csv>]
+
+Every input scaling is tried, so the right one stands out: the bundled v2 model expects raw_0_255
+(it rescales internally); the v1 model (git history, origin/master before v2) expects minus1_1.
+Note: the v2 model was trained on ~80% of PlantVillage, so PlantVillage photos may be in its training
+set. Its held-out numbers are in tools/model-training/metrics_v2.json.
 """
 import sys
 import os
@@ -36,7 +41,7 @@ FOLDER_TO_LABEL = {
     "Tomato___Tomato_mosaic_virus": "mosaic_virus",
     "Tomato___Tomato_Yellow_Leaf_Curl_Virus": "Yellow_Leaf_Curl",
 }
-SCHEMES = {"raw_0_255 (app today)": (0.0, 1.0), "minus1_1": (127.5, 127.5), "zero_1": (0.0, 255.0)}
+SCHEMES = {"raw_0_255": (0.0, 1.0), "minus1_1": (127.5, 127.5), "zero_1": (0.0, 255.0)}
 SHORT = ["Hea", "Bac", "EBl", "LBl", "Mol", "Sep", "Spi", "Tgt", "Mos", "YLC"]
 
 

@@ -17,19 +17,22 @@ internal data class ModelSpec(
 
     companion object {
         /**
-         * mean=127.5, std=127.5 => inputs scaled to [-1, 1], which is what the model was trained on.
+         * MobileNetV3-Large fine-tuned on PlantVillage + PlantDoc tomato photos
+         * (tools/model-training/train_tomato_model.ipynb), float16 weights.
          *
-         * v1 fed raw 0..255 floats (mean=0, std=1). On 150 labelled PlantVillage photos (15 per
-         * class) that scored 12.7% top-1 at ~94% average confidence, while [-1, 1] scored 93.3%.
-         * Reproduce with tools/model-eval/evaluate.py.
+         * mean=0, std=1 => raw 0..255 RGB floats. Scaling to [-1, 1] happens inside the model, so the
+         * app and the training pipeline cannot disagree about it (v1's mistake).
+         *
+         * Held-out accuracy (tools/model-training/metrics_v2.json): 99.0% on PlantVillage lab photos,
+         * 55.1% on PlantDoc field photos. The previous model scored 95.1% and 21.7% on the same sets.
          */
-        val TomatoLeafV1 = ModelSpec(
-            assetName = "tomato_leaf_disease.tflite",
+        val TomatoLeafV2 = ModelSpec(
+            assetName = "tomato_leaf_disease_v2.tflite",
             inputWidth = 224,
             inputHeight = 224,
             channels = 3,
-            mean = 127.5f,
-            std = 127.5f,
+            mean = 0f,
+            std = 1f,
             labels = ModelLabels.ORDERED,
         )
     }

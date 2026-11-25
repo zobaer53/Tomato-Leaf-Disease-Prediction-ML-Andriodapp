@@ -31,5 +31,5 @@ internal object DispatcherModule {
             .asCoroutineDispatcher()
 
     @Provides
-    fun provideModelSpec(): ModelSpec = ModelSpec.TomatoLeafV1
+    fun provideModelSpec(): ModelSpec = ModelSpec.TomatoLeafV2
 }
