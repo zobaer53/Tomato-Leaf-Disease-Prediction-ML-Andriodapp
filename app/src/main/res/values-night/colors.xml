@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="splash_background">#1B3A27</color>
+    <!-- Equals the dark colour scheme's background, so there is no light flash after the splash. -->
+    <color name="window_background">#101510</color>
+</resources>
