@@ -8,9 +8,11 @@ class ModelSpecTest {
     private val spec = ModelSpec.TomatoLeafV1
 
     @Test
-    fun `tomato model keeps legacy raw 0 to 255 normalization`() {
-        assertEquals(0f, spec.mean, 0f)
-        assertEquals(1f, spec.std, 0f)
+    fun `tomato model scales inputs to minus 1 to 1 as it was trained`() {
+        assertEquals(127.5f, spec.mean, 0f)
+        assertEquals(127.5f, spec.std, 0f)
+        assertEquals(-1f, (0f - spec.mean) / spec.std, 0f)
+        assertEquals(1f, (255f - spec.mean) / spec.std, 0f)
     }
 
     @Test

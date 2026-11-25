@@ -148,10 +148,24 @@ The model is `core/data/src/main/assets/tomato_leaf_disease.tflite`. It has no T
 
 The model file cannot confirm this order. It comes from the v1 app.
 
-**Preprocessing** (kept identical to v1):
+**Preprocessing:**
 1. Decode the image at full size, without applying EXIF rotation. Images over 4096 px on a side are subsampled to avoid running out of memory.
 2. Bilinear-resize to 224×224 by stretching. No crop.
-3. Write R, G, B as float32 in the range **0–255**, row-major. Alpha is dropped. No mean/std normalization.
+3. Write R, G, B as float32 scaled to **[-1, 1]** (`(v - 127.5) / 127.5`), row-major. Alpha is dropped.
+
+### Accuracy
+
+Measured with [`tools/model-eval/evaluate.py`](tools/model-eval/evaluate.py), which uses the same preprocessing as the app. The test set is 150 photos from the public [PlantVillage dataset](https://github.com/spMohanty/PlantVillage-Dataset): a fixed random sample (seed 42) of 15 photos per class.
+
+| Input scaling | Top-1 accuracy | Mean top-1 confidence |
+|---|---|---|
+| **[-1, 1] (v2, current)** | **93.3%** (140/150) | 0.98 |
+| [0, 1] | 62.0% | 0.95 |
+| raw 0–255 (v1) | 12.7% | 0.94 |
+
+v1 fed raw 0–255 values. Its predictions were close to random (mostly "Septoria leaf spot" or "Late blight") while it reported over 90% confidence. With [-1, 1] scaling, the confusion matrix is almost entirely diagonal, which also confirms the label order above. The weakest class is target spot (9/15; it is confused with spider mites).
+
+The model was most likely trained on PlantVillage, so these photos may overlap its training data. That makes this number optimistic. Expect lower accuracy on field photos with busy backgrounds, several leaves in one frame, or unusual lighting.
 
 ## Privacy
 
@@ -165,11 +179,10 @@ This app is **informational only and is not professional agronomic or plant-path
 
 ## Known limitations and open questions
 
-- **Input normalization is unverified.** The app feeds raw 0–255 values, the same as v1. However, the tensor names (`sequential_1/model1/Conv1_pad`, `dense_Dense2`) match a Teachable Machine export. Those exports are usually trained on inputs scaled to **[-1, 1]**, and the graph has no rescale layer of its own. The model may be getting inputs on the wrong scale.
-  *How to test:* collect a few labelled leaf photos per class. Change `ModelSpec` to mean 127.5 / std 127.5, a one-line change. Compare top-1 accuracy against the current mean 0 / std 1.
+- **The accuracy figures come from lab photos.** PlantVillage images show one leaf on a plain background. Accuracy on field photos has not been measured.
 - **EXIF rotation is not applied** before inference, the same as v1. The Coil preview shows rotated photos upright, but the model sees them unrotated. Applying EXIF would change the model's input, so it is left as an explicit decision.
 - **The 0.60 confidence threshold is uncalibrated.** It is a starting point (`ThresholdConfidencePolicy.DEFAULT_MIN_CONFIDENCE`), not a value tuned on a validation set.
-- **No golden-output comparison with v1.** The v1 build needs an old platform and build tools that were not installed. Parity is pinned by unit tests of the preprocessing instead. See the device verification table below.
+- **No golden-output comparison with v1.** v2 deliberately changes the input scaling (see [Accuracy](#accuracy)), so a byte-for-byte match with v1's output is no longer the goal.
 - **CPU only.** v1 declared a GPU dependency but never used it. GPU acceleration is not enabled.
 - **The launcher icon is still the Android Studio template icon** (green grid and Android robot), the same as in v1. The splash screen shows it too. v1's unused "Plant ML app" artwork (`mipmap-*/ic_launcher_foreground.png`) was removed as dead code in v2; it can be restored from git history if you want to turn it into a proper adaptive icon.
 
@@ -179,7 +192,8 @@ One row per device. Max abs difference is measured against a v1 golden output; T
 
 | Device | Android | LiteRT version | Accelerator | Max abs difference | Top-1 |
 |---|---|---|---|---|---|
-| Pixel 10 Pro emulator (AVD, arm64-v8a) | 17 | 2.4.0 | CPU (XNNPACK, 71/71 ops delegated) | n/a (no golden) | Septoria leaf spot, 100% (synthetic 640×640 leaf drawing with brown ringed spots, not a real photo) |
+| Pixel 10 Pro emulator (AVD, arm64-v8a) | 17 | 2.4.0 | CPU (XNNPACK, 71/71 ops delegated) | n/a (no golden) | Septoria leaf spot, 100% (synthetic 640×640 leaf drawing with brown ringed spots, not a real photo; raw 0–255 build) |
+| Pixel 6a (arm64-v8a) | 17 | 2.4.0 | CPU | n/a (no golden) | 4/4 correct on PlantVillage photos (healthy, early blight, leaf mold, yellow leaf curl) with [-1, 1] scaling; 0/4 with v1's raw 0–255 scaling. Matches `tools/model-eval/evaluate.py` exactly. |
 
 On the same emulator, `:core:data:connectedDebugAndroidTest` ran 5 tests: 4 passed and 1 was skipped (the golden comparison, because no golden file exists). `:app:connectedDebugAndroidTest` ran 1 test, which passed.
 
