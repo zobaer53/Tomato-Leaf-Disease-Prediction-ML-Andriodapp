@@ -17,19 +17,19 @@ internal data class ModelSpec(
 
     companion object {
         /**
-         * mean=0, std=1 => raw 0..255 floats: byte-for-byte the legacy TensorImage(FLOAT32).load(bitmap).
+         * mean=127.5, std=127.5 => inputs scaled to [-1, 1], which is what the model was trained on.
          *
-         * The tensor names suggest a Teachable Machine export, which is usually trained on [-1, 1]
-         * inputs (mean=127.5, std=127.5). That is unproven, so legacy parity is kept; change it here
-         * only after an A/B on labelled photos.
+         * v1 fed raw 0..255 floats (mean=0, std=1). On 150 labelled PlantVillage photos (15 per
+         * class) that scored 12.7% top-1 at ~94% average confidence, while [-1, 1] scored 93.3%.
+         * Reproduce with tools/model-eval/evaluate.py.
          */
         val TomatoLeafV1 = ModelSpec(
             assetName = "tomato_leaf_disease.tflite",
             inputWidth = 224,
             inputHeight = 224,
             channels = 3,
-            mean = 0f,
-            std = 1f,
+            mean = 127.5f,
+            std = 127.5f,
             labels = ModelLabels.ORDERED,
         )
     }
