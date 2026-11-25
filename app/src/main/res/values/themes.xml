@@ -1,16 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Plantapp" parent="Theme.MaterialComponents.DayNight">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    <!--
+        Base application theme. Compose draws everything; this only sets window defaults.
+        The window background follows day/night through @color/window_background, so the frame
+        between the splash and the first Compose frame matches PlantAppTheme in both modes.
+        System-bar colours and icon appearance are set at runtime by enableEdgeToEdge().
+    -->
+    <style name="Theme.Plantapp" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:colorBackground">@color/window_background</item>
+        <!-- The app ships its own dark scheme; keep the system from auto-darkening the light theme. -->
+        <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
+    </style>
+
+    <!-- Splash theme, swapped for Theme.Plantapp by installSplashScreen(). The icon is left unset,
+         so the system uses the launcher icon. -->
+    <style name="Theme.Plantapp.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.Plantapp</item>
     </style>
 </resources>

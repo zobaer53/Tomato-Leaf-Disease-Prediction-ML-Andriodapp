@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Leaf Disease Prediction</string>
+    <string name="guide_unavailable">No browser is available to open this guide.</string>
 </resources>

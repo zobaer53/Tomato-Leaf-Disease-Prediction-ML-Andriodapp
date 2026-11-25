@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Diagnosis screen -->
+    <string name="diagnosis_title">Tomato leaf check</string>
+    <string name="diagnosis_intro">Photograph a single tomato leaf and the app will check it for common diseases. Everything runs on your device.</string>
+    <string name="diagnosis_select_photo">Select photo</string>
+    <string name="diagnosis_change_photo">Choose another photo</string>
+    <string name="diagnosis_analyze">Analyze leaf</string>
+    <string name="diagnosis_analyzing">Analyzing…</string>
+    <string name="diagnosis_try_again">Try again</string>
+
+    <!-- Leaf image -->
+    <string name="image_none_description">No leaf photo selected</string>
+    <string name="image_selected_description">Selected leaf photo</string>
+    <string name="image_click_label">choose a photo</string>
+    <string name="image_load_failed">This photo can\'t be shown</string>
+
+    <!-- Tips (idle) -->
+    <string name="tips_title">For the best result</string>
+    <string name="tips_one_leaf">Fill the frame with one leaf</string>
+    <string name="tips_light">Use daylight and avoid harsh shadows</string>
+    <string name="tips_focus">Keep the leaf sharp and in focus</string>
+    <string name="tips_ready">Photo ready. Tap \"Analyze leaf\" to check it.</string>
+
+    <!-- Analyzing -->
+    <string name="analyzing_title">Analyzing your leaf…</string>
+    <string name="analyzing_body">This usually takes a moment.</string>
+
+    <!-- Result -->
+    <string name="result_healthy_title">Looks healthy</string>
+    <string name="result_disease_title">Possible disease detected</string>
+    <string name="result_unsure_title">Not sure about this one</string>
+    <string name="result_unsure_body">Treat this as a best guess. For a clearer answer, try a closer, well-lit photo of a single leaf.</string>
+    <string name="result_confidence">%1$d%% confidence</string>
+    <string name="result_top_matches">Top matches</string>
+    <string name="result_match_description">%1$s, %2$d%%</string>
+    <string name="percent_value">%1$d%%</string>
+    <string name="result_learn_more">Treatment and info</string>
+    <string name="disclaimer">For information only, not professional advice. Check with a local extension service or plant expert before treating.</string>
+
+    <!-- Error -->
+    <string name="error_title">Couldn\'t analyze this photo</string>
+    <string name="error_image_unreadable">This photo couldn\'t be read. Try a different image.</string>
+    <string name="error_model_unavailable">The disease model couldn\'t be loaded. Restart the app and try again.</string>
+    <string name="error_inference_failed">Something went wrong while analyzing the photo. Please try again.</string>
+
+    <!-- Disease info screen -->
+    <string name="navigate_back">Navigate back</string>
+    <string name="info_about">About this disease</string>
+    <string name="info_healthy_about">About this result</string>
+    <string name="info_what_to_do">What to do</string>
+    <string name="info_guide_body">Read a treatment and prevention guide from an agricultural extension service.</string>
+    <string name="info_open_guide">Open treatment guide</string>
+    <string name="info_guide_source">Opens %1$s in your browser</string>
+    <string name="info_loading">Loading disease information</string>
+
+    <!-- Disease labels -->
+    <string name="disease_healthy">Healthy leaf</string>
+    <string name="disease_bacterial_spot">Bacterial spot</string>
+    <string name="disease_early_blight">Early blight</string>
+    <string name="disease_late_blight">Late blight</string>
+    <string name="disease_leaf_mold">Leaf mold</string>
+    <string name="disease_septoria_leaf_spot">Septoria leaf spot</string>
+    <string name="disease_spider_mites">Two-spotted spider mites</string>
+    <string name="disease_target_spot">Target spot</string>
+    <string name="disease_mosaic_virus">Tomato mosaic virus</string>
+    <string name="disease_yellow_leaf_curl_virus">Tomato yellow leaf curl virus</string>
+</resources>
