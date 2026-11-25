@@ -9,7 +9,7 @@ import org.junit.Test
 
 class ScoreMapperTest {
 
-    private val mapper = ScoreMapper(ModelSpec.TomatoLeafV1)
+    private val mapper = ScoreMapper(ModelSpec.TomatoLeafV2)
 
     @Test
     fun `score i is paired with label i`() {

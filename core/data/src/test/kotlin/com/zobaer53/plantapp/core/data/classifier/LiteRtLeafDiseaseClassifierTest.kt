@@ -37,7 +37,7 @@ class LiteRtLeafDiseaseClassifierTest {
     }
 
     private val image = ImageRef("content://media/picker/0/42")
-    private val spec = ModelSpec.TomatoLeafV1
+    private val spec = ModelSpec.TomatoLeafV2
     private val source = FakeImageTensorSource()
     private val engine = FakeInferenceEngine()
     private val classifier = LiteRtLeafDiseaseClassifier(source, engine, ScoreMapper(spec), spec)
