@@ -14,8 +14,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 /**
- * Legacy-parity preprocessing: full decode (no EXIF rotation) -> bilinear stretch to the model size
- * (`createScaledBitmap(.., filter = true)`, no crop) -> getPixels -> raw RGB floats per [ModelSpec].
+ * Preprocessing: full decode (no EXIF rotation) -> bilinear stretch to the model size
+ * (`createScaledBitmap(.., filter = true)`, no crop) -> getPixels -> RGB floats normalized with [ModelSpec] mean/std.
  */
 internal class UriImageTensorSource @Inject constructor(
     private val decoder: BitmapDecoder,
